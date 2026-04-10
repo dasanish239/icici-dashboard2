@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ICICI Aspire Program — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B3A6B;
+  --navy-light:#2952A3;
+  --gold:#C8972B;
+  --gold-lt:#FDF5E4;
+  --green:#1A7A3C;
+  --green-lt:#E6F4EC;
+  --red:#C0392B;
+  --red-lt:#FDECEA;
+  --amber:#D97706;
+  --amber-lt:#FFF8E6;
+  --purple:#5B21B6;
+  --purple-lt:#EEE9FD;
+  --surface:#FFFFFF;
+  --surf2:#F5F7FA;
+  --surf3:#EEF1F6;
+  --text:#1A2035;
+  --muted:#6B7699;
+  --border:#DDE3F0;
+  --shadow:0 2px 12px rgba(27,58,107,.08);
+  --shadow-md:0 4px 24px rgba(27,58,107,.13);
+}
+html,body{height:100%;width:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:var(--text);background:#EFF3FA;min-height:100vh;padding:0;overflow-x:hidden}
+.wrapper{width:100%;max-width:100vw;min-height:100vh;padding:.75rem 1rem 1.5rem;display:flex;flex-direction:column}
+
+/* HEADER */
+.db-header{background:linear-gradient(135deg,var(--navy) 0%,#243E7A 60%,#1B3A6B 100%);color:#fff;padding:.9rem 1.2rem;border-radius:14px;margin-bottom:.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;box-shadow:0 4px 24px rgba(27,58,107,.28);position:relative;overflow:hidden}
+.db-header::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;background:rgba(200,151,43,.08);border-radius:50%;pointer-events:none}
+.db-header-left{display:flex;align-items:center;gap:.9rem;flex:1;min-width:0}
+.db-logo{width:44px;height:44px;background:rgba(255,255,255,.12);border-radius:10px;border:1.5px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.db-title{font-size:1.05rem;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+.db-title span{color:rgba(200,151,43,.9);display:block;font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.15rem;opacity:.9}
+.db-header-right{display:flex;align-items:center;gap:.75rem;flex-shrink:0}
+.upload-btn{display:flex;align-items:center;gap:.4rem;background:rgba(200,151,43,.18);border:1.5px solid rgba(200,151,43,.45);color:var(--gold);font-family:'Plus Jakarta Sans',sans-serif;font-size:.72rem;font-weight:700;padding:.45rem .9rem;border-radius:8px;cursor:pointer;text-decoration:none;transition:all .2s;letter-spacing:.03em;white-space:nowrap}
+.upload-btn:hover{background:rgba(200,151,43,.32);border-color:var(--gold);color:#fff;transform:translateY(-1px)}
+.upload-btn svg{width:15px;height:15px;flex-shrink:0}
+.db-meta{font-size:.68rem;opacity:.8;text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.db-meta b{display:block;font-size:.82rem;opacity:1;font-weight:600}
+.db-date{font-size:.72rem;color:rgba(200,151,43,.9);font-weight:600;letter-spacing:.04em}
+.live-dot{display:inline-block;width:7px;height:7px;background:#4ade80;border-radius:50%;margin-right:5px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* NAV TABS */
+.nav-tabs{display:flex;gap:.45rem;margin-bottom:.75rem;flex-wrap:wrap}
+.nav-tab{padding:7px 18px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.03em;transition:all .2s}
+.nav-tab:hover{border-color:var(--navy);color:var(--navy);background:var(--surf2)}
+.nav-tab.active{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 3px 10px rgba(27,58,107,.25)}
+
+/* CONTROLS */
+.controls{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.75rem;align-items:center}
+.controls input,.controls select{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);outline:none;height:34px;transition:border-color .2s}
+.controls input:focus,.controls select:focus{border-color:var(--navy-light)}
+.controls input{flex:1;min-width:150px}
+.filter-label{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+.btn-reset{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;padding:6px 13px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--muted);cursor:pointer;height:34px;transition:all .2s}
+.btn-reset:hover{background:var(--surf2);color:var(--text);border-color:var(--navy)}
+
+/* KPIS */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.5rem;margin-bottom:.75rem}
+.kpi{border-radius:11px;padding:.8rem .9rem;position:relative;overflow:hidden;border:1.5px solid var(--border);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-accent{position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:11px 0 0 11px}
+.kpi-label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+.kpi-value{font-size:1.9rem;font-weight:800;line-height:1;margin-bottom:.2rem;letter-spacing:-.02em}
+.kpi-sub{font-size:10.5px;color:var(--muted)}
+.kpi-hint{font-size:9.5px;color:var(--muted);opacity:.65;margin-top:4px;font-style:italic}
+
+/* GRID LAYOUTS */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;margin-bottom:.65rem}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-bottom:.65rem}
+@media(max-width:700px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* CARDS */
+.card{background:var(--surface);border:1.5px solid var(--border);border-radius:13px;padding:.9rem 1rem;overflow:hidden;box-shadow:var(--shadow)}
+.card-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.85rem}
+.chart-wrap{position:relative;width:100%}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;max-height:340px;overflow-y:auto;border-radius:8px}
+.tbl-wrap::-webkit-scrollbar,.spotlight-scroll::-webkit-scrollbar,.modal-body::-webkit-scrollbar{width:5px;height:5px}
+.tbl-wrap::-webkit-scrollbar-track,.spotlight-scroll::-webkit-scrollbar-track,.modal-body::-webkit-scrollbar-track{background:var(--surf2)}
+.tbl-wrap::-webkit-scrollbar-thumb,.spotlight-scroll::-webkit-scrollbar-thumb,.modal-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead{position:sticky;top:0;z-index:2}
+thead th{background:var(--navy);color:#fff;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:8px 10px;text-align:left;white-space:nowrap;cursor:pointer;user-select:none}
+thead th:hover{background:#243E7A}
+tbody tr{border-bottom:1px solid var(--surf3);cursor:pointer;transition:background .1s}
+tbody tr:hover{background:#EFF5FF}
+tbody td{padding:7px 10px;vertical-align:middle}
+.rank-badge{font-size:10.5px;font-weight:800;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:20px;white-space:nowrap}
+.tag-high{background:var(--green-lt);color:var(--green)}
+.tag-track{background:var(--amber-lt);color:var(--amber)}
+.tag-low{background:var(--red-lt);color:var(--red)}
+.bar-mini{height:6px;border-radius:3px;background:#E5EAF5;overflow:hidden;min-width:50px}
+.bar-fill{height:100%;border-radius:3px;transition:width .3s}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--muted);margin-bottom:.5rem}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend-sq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* UAT GRID */
+.uat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem}
+.uat-cell{border-radius:9px;padding:.6rem;text-align:center;border:1.5px solid var(--border);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.uat-cell:hover{transform:scale(1.03);box-shadow:var(--shadow)}
+.uat-name{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem}
+.uat-pct{font-size:1.4rem;font-weight:800;letter-spacing:-.02em}
+.uat-bar{height:4px;border-radius:2px;background:var(--border);overflow:hidden;margin-top:.4rem}
+
+/* SPOTLIGHT */
+.spotlight-scroll{max-height:220px;overflow-y:auto;padding-right:4px}
+.summary-row{background:var(--surf2);border-radius:8px;padding:.55rem .9rem;margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;border:1px solid var(--border);cursor:pointer;transition:background .1s}
+.summary-row:hover{background:#EBF0FF}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(16,26,56,.52);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(3px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:16px;width:100%;max-width:680px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.22);transform:translateY(20px);transition:transform .2s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{background:linear-gradient(135deg,var(--navy),#243E7A);color:#fff;padding:.9rem 1.2rem;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.modal-header h3{font-size:.95rem;font-weight:800}
+.modal-close{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1;opacity:.7;transition:opacity .15s}
+.modal-close:hover{opacity:1}
+.modal-body{overflow-y:auto;padding:1.1rem;flex:1}
+.modal-list{list-style:none}
+.modal-list li{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:8px;margin-bottom:4px;font-size:12.5px;font-weight:500;border:1px solid var(--border);cursor:pointer;transition:background .1s}
+.modal-list li:hover{background:var(--surf2)}
+.modal-list li .li-rank{font-weight:800;font-size:11px;width:30px;text-align:center;flex-shrink:0}
+.modal-list li .li-name{flex:1;padding:0 10px}
+.modal-list li .li-score{font-weight:800;font-size:13px;flex-shrink:0}
+
+/* STUDENT MODAL */
+.student-modal{max-width:780px}
+.stu-hero{display:grid;grid-template-columns:repeat(5,1fr);gap:.55rem;margin-bottom:.9rem}
+.stu-stat{background:var(--surf2);border-radius:9px;padding:.65rem;text-align:center;border:1px solid var(--border)}
+.stu-stat-label{font-size:9.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem}
+.stu-stat-val{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.stu-section{margin-bottom:.9rem}
+.stu-section h4{font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.55rem;padding-bottom:.35rem;border-bottom:1px solid var(--border)}
+.stu-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:12.5px;border-bottom:1px solid var(--surf3)}
+.stu-row:last-child{border-bottom:none}
+.stu-row-label{color:var(--muted)}
+.uat-pill-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.4rem}
+.uat-pill{border-radius:6px;padding:.4rem .6rem;font-size:11px;font-weight:700;text-align:center}
+.uat-pill.ok{background:var(--green-lt);color:var(--green)}
+.uat-pill.fail{background:var(--red-lt);color:var(--red)}
+.lumen-bars{display:flex;flex-direction:column;gap:.5rem}
+.lumen-row{display:flex;align-items:center;gap:8px;font-size:12px}
+.lumen-label{width:45px;color:var(--muted);font-weight:600;font-size:11px}
+.lumen-bar-bg{flex:1;height:10px;background:#E5EAF5;border-radius:5px;overflow:hidden}
+.lumen-bar-fill{height:100%;border-radius:5px;transition:width .5s}
+.lumen-pct{width:38px;text-align:right;font-weight:800;font-size:12px}
+.lumen-bucket{font-size:10px;color:var(--muted);margin-left:2px;min-width:70px}
+.btn-back{font-size:12.5px;padding:7px 16px;border:1.5px solid var(--navy);border-radius:8px;background:transparent;color:var(--navy);cursor:pointer;font-weight:700;margin-bottom:.9rem;display:flex;align-items:center;gap:6px;transition:all .2s}
+.btn-back:hover{background:var(--navy);color:#fff}
+
+/* SECTION PANEL */
+#sectionBPanel{display:none}
+.section-selector-wrap{display:flex;align-items:center;gap:.6rem;margin-bottom:.75rem;flex-wrap:wrap}
+.section-selector-wrap label{font-size:12px;color:var(--muted);font-weight:700;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em}
+.section-select{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;padding:7px 32px 7px 12px;border:2px solid var(--navy);border-radius:9px;background:var(--surface);color:var(--navy);outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231B3A6B' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:all .2s}
+.section-select:hover{border-color:var(--navy-light);background-color:var(--surf2)}
+.section-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(200,151,43,.15);border:1.5px solid rgba(200,151,43,.35);color:var(--gold);font-size:.7rem;font-weight:700;padding:.3rem .8rem;border-radius:20px;letter-spacing:.06em;white-space:nowrap}
+.secb-controls{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.75rem;align-items:center}
+.secb-controls select,.secb-controls input{font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);outline:none;height:34px;transition:border-color .2s}
+.secb-controls input{min-width:170px;flex:1}
+.secb-controls select:focus,.secb-controls input:focus{border-color:var(--navy-light)}
+.student-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:.55rem}
+.student-card{background:var(--surface);border:1.5px solid var(--border);border-radius:11px;padding:.75rem .9rem;cursor:pointer;transition:all .18s;position:relative}
+.student-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--navy-light)}
+.sc-rank{position:absolute;top:.6rem;right:.6rem;font-size:10px;font-weight:800;background:var(--navy);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.sc-name{font-size:.8rem;font-weight:700;margin-bottom:.4rem;padding-right:25px;line-height:1.3;color:var(--text)}
+.sc-score{font-size:1.55rem;font-weight:800;line-height:1;margin-bottom:.3rem;letter-spacing:-.02em}
+.sc-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:.4rem}
+.sc-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700}
+
+/* NO DATA PLACEHOLDER */
+.no-data-box{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem;text-align:center;background:var(--surface);border-radius:13px;border:2px dashed var(--border)}
+.no-data-box .nd-icon{font-size:2.8rem;margin-bottom:.75rem;opacity:.6}
+.no-data-box .nd-title{font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:.4rem}
+.no-data-box .nd-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.2rem;max-width:380px;line-height:1.5}
+.no-data-box .nd-btn{display:inline-flex;align-items:center;gap:.45rem;background:var(--navy);color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:.8rem;font-weight:700;padding:.55rem 1.2rem;border-radius:9px;text-decoration:none;transition:all .2s}
+.no-data-box .nd-btn:hover{background:var(--navy-light);transform:translateY(-1px)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .wrapper{padding:.5rem .6rem 1rem}
+  .db-header{padding:.7rem .9rem}
+  .db-title{font-size:.9rem}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:.4rem}
+  .kpi-value{font-size:1.6rem}
+  .uat-grid{grid-template-columns:repeat(2,1fr)}
+  .stu-hero{grid-template-columns:repeat(3,1fr)}
+  .uat-pill-grid{grid-template-columns:1fr 1fr}
+  .student-grid{grid-template-columns:repeat(auto-fill,minmax(155px,1fr))}
+  .upload-btn span{display:none}
+  .upload-btn{padding:.45rem .6rem}
+}
+@media(max-width:480px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .uat-grid{grid-template-columns:repeat(2,1fr)}
+  .stu-hero{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- HEADER -->
+<div class="db-header">
+  <div class="db-header-left">
+    <div class="db-logo">🏦</div>
+    <div class="db-title">
+      <span>ICICI Bank Aspire Program</span>
+      Section B — Student Activity Dashboard
+    </div>
+  </div>
+  <div class="db-header-right">
+    <button class="upload-btn" onclick="handleUploadClick()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span>Upload Info</span>
+    </button>
+    <div class="db-meta">
+      <div class="db-date" id="live-date"></div>
+      <b id="live-time"><span class="live-dot"></span>Live</b>
+      <span style="font-size:.65rem;opacity:.65">Batch 9 · Manipal Academy</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('main')">📊 Overview</button>
+  <button class="nav-tab" onclick="showTab('sectionb')">🎓 Section Students</button>
+</div>
+
+<!-- ===== MAIN DASHBOARD ===== -->
+<div id="mainPanel">
+  <div class="controls">
+    <span class="filter-label">Filter:</span>
+    <input type="text" id="searchInput" placeholder="Search student name..." oninput="applyFilters()">
+    <select id="statusFilter" onchange="applyFilters()">
+      <option value="all">All Statuses</option>
+      <option value="high">High Performer</option>
+      <option value="track">On Track</option>
+      <option value="low">Needs Attention</option>
+    </select>
+    <select id="laptopFilter" onchange="applyFilters()">
+      <option value="all">Laptop: All</option>
+      <option value="yes">Laptop: Active</option>
+      <option value="no">Laptop: Inactive</option>
+    </select>
+    <button class="btn-reset" onclick="resetFilters()">Reset</button>
+    <span id="filterCount" style="font-size:12px;color:var(--muted);margin-left:auto"></span>
+  </div>
+
+  <div class="kpis" id="kpiRow"></div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Performance Distribution — Section B (53 Students)</div>
+      <div class="legend">
+        <span><span class="legend-sq" style="background:var(--green)"></span>High Performer ≥75%</span>
+        <span><span class="legend-sq" style="background:var(--amber)"></span>On Track 50–74%</span>
+        <span><span class="legend-sq" style="background:var(--red)"></span>Needs Attention &lt;50%</span>
+      </div>
+      <div class="chart-wrap" style="height:210px"><canvas id="pieChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Lumen Module Avg Progress (Batch Average %)</div>
+      <div class="legend">
+        <span><span class="legend-sq" style="background:#5B21B6"></span>SES</span>
+        <span><span class="legend-sq" style="background:#7C3AED"></span>TS</span>
+        <span><span class="legend-sq" style="background:#A78BFA"></span>BBC</span>
+        <span style="font-size:10px;color:var(--muted);margin-left:auto">Midpoint of reported range</span>
+      </div>
+      <div class="chart-wrap" style="height:210px"><canvas id="lumenBar"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:.65rem">
+    <div class="card-title">UAT Link Adoption (% Working) — Click any cell to drill down</div>
+    <div class="uat-grid" id="uatGrid"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="card-title">Laptop & Learning Matrix Adoption</div>
+      <div class="chart-wrap" style="height:190px"><canvas id="adoptionChart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Score Distribution — All 53 Students</div>
+      <div class="chart-wrap" style="height:190px"><canvas id="distChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-bottom:.65rem">
+    <div class="card">
+      <div class="card-title">🏆 Top Performers Spotlight</div>
+      <div class="spotlight-scroll" id="topSpot"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ Needs Attention — Action Required</div>
+      <div class="spotlight-scroll" id="lowSpot"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Student Scorecard — Click any row for full dashboard</span>
+      <span id="tableCount" style="font-size:11px;color:var(--muted);font-weight:500"></span>
+    </div>
+    <div class="tbl-wrap">
+      <table id="scoreTable">
+        <thead>
+          <tr>
+            <th onclick="sortBy('rank')" title="Sort by rank"># ↕</th>
+            <th onclick="sortBy('name')" title="Sort by name">Name ↕</th>
+            <th onclick="sortBy('laptop')" title="Sort by laptop">Laptop ↕</th>
+            <th onclick="sortBy('lm')" title="Sort by learning matrix">Lrn Matrix ↕</th>
+            <th onclick="sortBy('lumen')" title="Sort by lumen average">Lumen Avg ↕</th>
+            <th onclick="sortBy('uat')" title="Sort by UAT">UAT ↕</th>
+            <th onclick="sortBy('score')" title="Sort by score">Score ↕</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION PANEL ===== -->
+<div id="sectionBPanel" style="display:none">
+  <div class="section-selector-wrap">
+    <label>Section:</label>
+    <select class="section-select" id="sectionDropdown" onchange="handleSectionChange()">
+      <option value="B" selected>Section-B</option>
+      <option value="A">Section-A</option>
+      <option value="C">Section-C</option>
+    </select>
+    <span class="section-badge" id="sectionBadge">📚 Section-B · Manipal Academy · 53 Students</span>
+  </div>
+
+  <!-- Section-B content -->
+  <div id="secBContent">
+    <div class="secb-controls">
+      <span class="filter-label">Filter:</span>
+      <input type="text" id="secbSearch" placeholder="Search by name..." oninput="renderSectionGrid()">
+      <select id="secbStatus" onchange="renderSectionGrid()">
+        <option value="all">All Statuses</option>
+        <option value="high">High Performer</option>
+        <option value="track">On Track</option>
+        <option value="low">Needs Attention</option>
+      </select>
+      <select id="secbLaptop" onchange="renderSectionGrid()">
+        <option value="all">Laptop: All</option>
+        <option value="yes">Laptop Active</option>
+        <option value="no">Laptop Inactive</option>
+      </select>
+      <select id="secbName" onchange="jumpToStudent()">
+        <option value="">Jump to student…</option>
+      </select>
+      <button class="btn-reset" onclick="resetSectionB()">Reset</button>
+    </div>
+    <div id="secbCount" style="font-size:12px;color:var(--muted);margin-bottom:.65rem"></div>
+    <div class="student-grid" id="studentGrid"></div>
+  </div>
+
+  <!-- No-data placeholder (hidden by default) -->
+  <div id="noDataSection" style="display:none">
+    <div class="no-data-box">
+      <div class="nd-icon">📭</div>
+      <div class="nd-title" id="noDataTitle">No data available for Section-A</div>
+      <div class="nd-sub">Student data for this section has not been uploaded yet. Ask students to fill in their information using the upload form, then refresh.</div>
+      <a class="nd-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdfIQWvGnWuS2yV2HlxpYy2mpXWySULgl_ZrhzhOInjjnCZFA/viewform?usp=publish-editor" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload Section Data →
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: drill-down list -->
+<div class="modal-overlay" id="drillModal" onclick="closeDrillModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="drillTitle">Students</h3>
+      <button class="modal-close" onclick="closeDrill()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div id="drillSubtitle" style="font-size:12px;color:var(--muted);margin-bottom:.8rem"></div>
+      <ul class="modal-list" id="drillList"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: individual student -->
+<div class="modal-overlay" id="stuModal" onclick="closeStuModal(event)">
+  <div class="modal student-modal">
+    <div class="modal-header">
+      <h3 id="stuModalTitle">Student Dashboard</h3>
+      <button class="modal-close" onclick="closeStu()">&times;</button>
+    </div>
+    <div class="modal-body" id="stuModalBody"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// =====================================================================
+// DATA — Section B — Real data from Excel (sheet_1_edited.xlsx)
+// =====================================================================
+const APPROVED_NAMES = [
+  "Mahesh Maddela","Gladson LG","Kavya Javvaji","Sameena Begum","Pooja Govind Kulkarni",
+  "Shaikh raziya","Goru Soniya","Ankit Bankar","Anumula Geethanjali","Kinjal Thakkar",
+  "Archana Patil","SHAIK UMMAR FAROOQ","Tatturi Pradeepthi","Srija Gudhi","Rentala Venkat Akhil",
+  "GODDATI RAKESH","SHUBHANSHI SHRIVASTAVA","GANNU SAIVARDHAN REDDY","Chittimalla Srija",
+  "Sagar Ganraj Samarth","Sagar mallanavar","Madikanti Keerthana","Gulipalli Bhargavi",
+  "Chinmai Pinagani","Guguloth Arun Kumar","Saraswati Ullegaddi","Sakshi Ganeshrao Deshmukh",
+  "Mukesh Jha","Anmol Raj","Alisha Dsouza","Mitesh khot","SHRINIDHI K N","S. Taejasri",
+  "B Jayasree","Shivarathri vamshi","SATHEESH P","Golla kiranbabu","Diya pawar","Ashiga A",
+  "Manohar A","Abhijth kt","Kola Sowjanya","ArunKumar","Kampalli Sai Naresh","Priyanka G",
+  "Sanjana Nuneti","Shaik Luthfulla","Rithish Reddy","Amruta Taradale","MADDURU TEJA",
+  "Priyanshu sharma","Anish Das","Sharmas"
+];
+
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdfIQWvGnWuS2yV2HlxpYy2mpXWySULgl_ZrhzhOInjjnCZFA/viewform?usp=publish-editor";
+
+function handleUploadClick(){
+  const name = prompt("Enter your Full Name to verify access:");
+  if(!name || !name.trim()) return;
+  const trimmed = name.trim();
+  const approved = APPROVED_NAMES.some(n => n.toLowerCase() === trimmed.toLowerCase());
+  if(!approved){
+    alert('🚫 Access Denied\n\n"' + trimmed + '" is not in the approved Batch 9B list.\nOutsiders are NOT allowed to submit or update data.');
+    return;
+  }
+  window.open(GOOGLE_FORM_URL, '_blank');
+}
+
+const SECTION_B_RAW = [
+  {name:"Mahesh Maddela",           laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Gladson LG",               laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"WORKING"},
+  {name:"Kavya Javvaji",            laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Sameena Begum",            laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"WORKING"},
+  {name:"Pooja Govind Kulkarni",    laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Shaikh raziya",            laptop:"NO", lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Goru Soniya",              laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Ankit Bankar",             laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Anumula Geethanjali",      laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Kinjal Thakkar",           laptop:"YES",lm:"NO", ses:"50%-75%", ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Archana Patil",            laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"25%-50%", c360:"WORKING",    icrms:"NOT WORKING",icrmv:"WORKING",    digi:"WORKING",    ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"SHAIK UMMAR FAROOQ",       laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Tatturi Pradeepthi",       laptop:"NO", lm:"NO", ses:"0%-25%",  ts:"0%-25%",  bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Srija Gudhi",              laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"WORKING",    icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"WORKING"},
+  {name:"Rentala Venkat Akhil",     laptop:"YES",lm:"NO", ses:"50%-75%", ts:"50%-75%", bbc:"25%-50%", c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"WORKING"},
+  {name:"GODDATI RAKESH",           laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"SHUBHANSHI SHRIVASTAVA",   laptop:"NO", lm:"NO", ses:"50%-75%", ts:"50%-75%", bbc:"25%-50%", c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"GANNU SAIVARDHAN REDDY",   laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Chittimalla Srija",        laptop:"YES",lm:"YES",ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Sagar Ganraj Samarth",     laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"50%-75%", c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Sagar mallanavar",         laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"50%-75%", c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Madikanti Keerthana",      laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Gulipalli Bhargavi",       laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Chinmai Pinagani",         laptop:"YES",lm:"NO", ses:"50%-75%", ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Guguloth Arun Kumar",      laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Saraswati Ullegaddi",      laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"WORKING",    icrms:"NOT WORKING",icrmv:"WORKING",    digi:"WORKING",    ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Sakshi Ganeshrao Deshmukh",laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Mukesh Jha",               laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Anmol Raj",                laptop:"NO", lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Alisha Dsouza",            laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Mitesh khot",              laptop:"YES",lm:"NO", ses:"50%-75%", ts:"75%-100%",bbc:"25%-50%", c360:"WORKING",    icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"SHRINIDHI K N",            laptop:"YES",lm:"YES",ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"S. Taejasri",              laptop:"YES",lm:"NO", ses:"50%-75%", ts:"50%-75%", bbc:"50%-75%", c360:"WORKING",    icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"B Jayasree",               laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Shivarathri vamshi",       laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"WORKING"},
+  {name:"SATHEESH P",               laptop:"YES",lm:"NO", ses:"50%-75%", ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Golla kiranbabu",          laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Diya pawar",               laptop:"NO", lm:"NO", ses:"50%-75%", ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Ashiga A",                 laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Manohar A",                laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Abhijth kt",               laptop:"YES",lm:"NO", ses:"50%-75%", ts:"50%-75%", bbc:"25%-50%", c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Kola Sowjanya",            laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"25%-50%", c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"ArunKumar",                laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"25%-50%", c360:"WORKING",    icrms:"WORKING",    icrmv:"NOT WORKING",digi:"WORKING",    ilens:"NOT WORKING",tol:"WORKING"},
+  {name:"Kampalli Sai Naresh",      laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Priyanka G",               laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Sanjana Nuneti",           laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Shaik Luthfulla",          laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Rithish Reddy",            laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"WORKING",    icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Amruta Taradale",          laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"MADDURU TEJA",             laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"0%-25%",  c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"WORKING",    tol:"NOT WORKING"},
+  {name:"Priyanshu sharma",         laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"WORKING",    icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Anish Das",                laptop:"YES",lm:"NO", ses:"75%-100%",ts:"75%-100%",bbc:"75%-100%",c360:"NOT WORKING",icrms:"NOT WORKING",icrmv:"WORKING",    digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+  {name:"Sharmas",                  laptop:"YES",lm:"YES",ses:"25%-50%", ts:"25%-50%", bbc:"25%-50%", c360:"WORKING",    icrms:"NOT WORKING",icrmv:"NOT WORKING",digi:"NOT WORKING",ilens:"NOT WORKING",tol:"NOT WORKING"},
+];
+
+
+// =====================================================================
+// SCORE ENGINE
+// Midpoint mapping: bucket string → midpoint fraction
+// "0%-25%" → 0.125, "25%-50%" → 0.375, "50%-75%" → 0.625, "75%-100%" → 0.875
+// =====================================================================
+const BUCKET_MID = {"0%-25%":0.125,"25%-50%":0.375,"50%-75%":0.625,"75%-100%":0.875};
+function bm(v){return BUCKET_MID[v]||0}
+
+function countUat(s){
+  return [s.c360,s.icrms,s.icrmv,s.digi,s.ilens,s.tol].filter(x=>x==="WORKING").length;
+}
+
+// Composite score formula (unchanged from original):
+// Laptop active (10%) + Lrn Matrix (10%) + Lumen avg midpoint (50%) + UAT working ratio (30%)
+function calcScore(s){
+  const lv = s.laptop==="YES" ? 1 : 0;
+  const lmv= s.lm==="YES"     ? 1 : 0;
+  const la = (bm(s.ses)+bm(s.ts)+bm(s.bbc))/3;
+  const up = countUat(s)/6;
+  return lv*0.10 + lmv*0.10 + la*0.50 + up*0.30;
+}
+
+function perfTag(sc){return sc>=0.75?"high":sc>=0.50?"track":"low"}
+function perfLabel(sc){return sc>=0.75?"High Performer":sc>=0.50?"On Track":"Needs Attention"}
+
+// Build & rank Section B dataset
+let allData = SECTION_B_RAW.map((s,i)=>{
+  const score   = calcScore(s);
+  const lumenAvg= (bm(s.ses)+bm(s.ts)+bm(s.bbc))/3;
+  const uatCount= countUat(s);
+  return {...s, id:i+1, score, lumenAvg, uatCount, uatPct:uatCount/6};
+});
+allData.sort((a,b)=>b.score-a.score).forEach((s,i)=>s.rank=i+1);
+
+let filtered=[...allData], sortCol='rank', sortDir=1;
+let currentSection='B';
+
+// =====================================================================
+// CLOCK
+// =====================================================================
+function updateClock(){
+  const now=new Date();
+  document.getElementById('live-time').innerHTML=
+    `<span class="live-dot"></span>${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
+  document.getElementById('live-date').textContent=
+    now.toLocaleDateString('en-IN',{weekday:'short',day:'2-digit',month:'short',year:'numeric'});
+}
+
+// =====================================================================
+// TAB SWITCHING
+// =====================================================================
+function showTab(tab){
+  document.querySelectorAll('.nav-tab').forEach((t,i)=>{
+    t.classList.toggle('active',(tab==='main'&&i===0)||(tab==='sectionb'&&i===1));
+  });
+  document.getElementById('mainPanel').style.display    = tab==='main'    ?'block':'none';
+  document.getElementById('sectionBPanel').style.display= tab==='sectionb'?'block':'none';
+  if(tab==='sectionb') handleSectionChange();
+}
+
+// =====================================================================
+// SECTION DROPDOWN — only Section-B has real data
+// =====================================================================
+function handleSectionChange(){
+  currentSection = document.getElementById('sectionDropdown').value;
+  const badge = document.getElementById('sectionBadge');
+  const secB  = document.getElementById('secBContent');
+  const noData= document.getElementById('noDataSection');
+  const ndTitle=document.getElementById('noDataTitle');
+
+  if(currentSection==='B'){
+    badge.textContent='📚 Section-B · Manipal Academy · '+allData.length+' Students';
+    secB.style.display='block';
+    noData.style.display='none';
+    renderSectionGrid();
+  } else {
+    badge.textContent=`📚 Section-${currentSection} · Manipal Academy · No data yet`;
+    secB.style.display='none';
+    noData.style.display='block';
+    ndTitle.textContent=`No data available for Section-${currentSection}`;
+  }
+}
+
+// =====================================================================
+// OVERVIEW FILTERS
+// =====================================================================
+function getFiltered(){
+  const q  = document.getElementById('searchInput').value.toLowerCase();
+  const st = document.getElementById('statusFilter').value;
+  const lp = document.getElementById('laptopFilter').value;
+  return allData.filter(s=>{
+    if(q  && !s.name.toLowerCase().includes(q))return false;
+    if(st!=='all' && perfTag(s.score)!==st)    return false;
+    if(lp==='yes' && s.laptop!=='YES')         return false;
+    if(lp==='no'  && s.laptop==='YES')         return false;
+    return true;
+  });
+}
+function applyFilters(){
+  filtered=getFiltered();
+  renderKPIs(filtered);
+  renderTable(filtered);
+  updateCharts(filtered);
+  const fc=document.getElementById('filterCount');
+  fc.textContent=filtered.length<allData.length?`Showing ${filtered.length} of ${allData.length} students`:'';
+}
+function resetFilters(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('statusFilter').value='all';
+  document.getElementById('laptopFilter').value='all';
+  applyFilters();
+}
+
+// =====================================================================
+// KPI CARDS
+// =====================================================================
+function renderKPIs(data){
+  const n   = data.length;
+  const hi  = data.filter(s=>perfTag(s.score)==='high').length;
+  const tr  = data.filter(s=>perfTag(s.score)==='track').length;
+  const lo  = data.filter(s=>perfTag(s.score)==='low').length;
+  const lp  = data.filter(s=>s.laptop==='YES').length;
+  const lpNo= n-lp;
+  const lmY = data.filter(s=>s.lm==='YES').length;
+  const avg = n ? data.reduce((a,s)=>a+s.score,0)/n : 0;
+
+  const cards=[
+    {label:'Total Students', val:n,                       sub:'Section B · Batch 9',           bg:'rgba(27,58,107,.08)', ac:'var(--navy)',    key:'all'},
+    {label:'Laptop Active',  val:lp,                      sub:`${n?Math.round(lp/n*100):0}% of batch`,  bg:'var(--green-lt)', ac:'var(--green)',   key:'lp-yes'},
+    {label:'Laptop Inactive',val:lpNo,                    sub:`${n?Math.round(lpNo/n*100):0}% of batch`,bg:'var(--red-lt)',   ac:'var(--red)',     key:'lp-no'},
+    {label:'High Performers',val:hi,                      sub:'Score ≥ 75%',                   bg:'var(--green-lt)', ac:'var(--green)',   key:'high'},
+    {label:'On Track',       val:tr,                      sub:'Score 50–74%',                  bg:'var(--amber-lt)', ac:'var(--amber)',   key:'track'},
+    {label:'Needs Attention',val:lo,                      sub:'Score < 50%',                   bg:'var(--red-lt)',   ac:'var(--red)',     key:'low'},
+    {label:'Lrn Matrix Active',val:lmY,                   sub:`${n?Math.round(lmY/n*100):0}% adoption`, bg:'var(--purple-lt)',ac:'var(--purple)',  key:'lm-yes'},
+    {label:'Avg Score',      val:Math.round(avg*100)+'%', sub:'Composite weighted',            bg:'var(--gold-lt)',  ac:'var(--gold)',    key:'avg'},
+  ];
+
+  const row=document.getElementById('kpiRow');
+  row.innerHTML=cards.map(c=>`
+    <div class="kpi" style="background:${c.bg}" data-kpi="${c.key}">
+      <div class="kpi-accent" style="background:${c.ac}"></div>
+      <div class="kpi-label">${c.label}</div>
+      <div class="kpi-value" style="color:${c.ac}">${c.val}</div>
+      <div class="kpi-sub">${c.sub}</div>
+      <div class="kpi-hint">👆 Click for details</div>
+    </div>`).join('');
+
+  row.onclick=function(e){
+    const card=e.target.closest('[data-kpi]');
+    if(!card)return;
+    const key=card.dataset.kpi;
+    const map={
+      'all':  ['All Students',data],
+      'avg':  ['All Students by Score',data],
+      'lp-yes':['Laptop Active',data.filter(s=>s.laptop==='YES')],
+      'lp-no': ['Laptop Inactive',data.filter(s=>s.laptop!=='YES')],
+      'high':  ['High Performers',data.filter(s=>perfTag(s.score)==='high')],
+      'track': ['On Track Students',data.filter(s=>perfTag(s.score)==='track')],
+      'low':   ['Needs Attention Students',data.filter(s=>perfTag(s.score)==='low')],
+      'lm-yes':['Learning Matrix Active',data.filter(s=>s.lm==='YES')],
+    };
+    if(map[key])showDrillModal(map[key][0],map[key][1]);
+  };
+}
+
+// =====================================================================
+// DRILL-DOWN MODAL
+// =====================================================================
+function showDrillModal(title,students){
+  document.getElementById('drillTitle').textContent=title;
+  document.getElementById('drillSubtitle').textContent=
+    `${students.length} student${students.length!==1?'s':''} · click any name to open their dashboard`;
+  const sorted=[...students].sort((a,b)=>a.rank-b.rank);
+  const tagC={'high':'var(--green)','track':'var(--amber)','low':'var(--red)'};
+  document.getElementById('drillList').innerHTML=sorted.map(s=>{
+    const t=perfTag(s.score), sc=Math.round(s.score*100);
+    return `<li onclick="openStudentDash(${s.id-1})">
+      <span class="li-rank" style="color:${tagC[t]}">#${s.rank}</span>
+      <span class="li-name">${s.name}</span>
+      <span class="tag tag-${t}" style="margin-right:8px">${perfLabel(s.score)}</span>
+      <span class="li-score" style="color:${tagC[t]}">${sc}%</span>
+    </li>`;
+  }).join('');
+  document.getElementById('drillModal').classList.add('open');
+}
+function closeDrill(){document.getElementById('drillModal').classList.remove('open')}
+function closeDrillModal(e){if(e.target===document.getElementById('drillModal'))closeDrill()}
+
+// =====================================================================
+// INDIVIDUAL STUDENT MODAL
+// =====================================================================
+function openStudentDash(idx){
+  // idx is s.id-1 (stable, assigned before sorting), find by id
+  const s = allData.find(x=>x.id===idx+1) || allData[idx];
+  const sc  = Math.round(s.score*100);
+  const t   = perfTag(s.score);
+  const tCol= t==='high'?'var(--green)':t==='track'?'var(--amber)':'var(--red)';
+
+  // Lumen percentages — midpoint of the reported bucket
+  const sesP = Math.round(bm(s.ses)*100);
+  const tsP  = Math.round(bm(s.ts)*100);
+  const bbcP = Math.round(bm(s.bbc)*100);
+
+  // Score breakdown (points out of 100)
+  const laptopPts = s.laptop==='YES' ? 10 : 0;
+  const lmPts     = s.lm==='YES'     ? 10 : 0;
+  const lumenPts  = Math.round(s.lumenAvg*50);   // 50% weight
+  const uatPts    = Math.round(s.uatPct*30);      // 30% weight
+
+  const uatKeys=[
+    {k:'c360',n:'C-360 Dashboard'},
+    {k:'icrms',n:'ICRM Sales'},
+    {k:'icrmv',n:'ICRM Services'},
+    {k:'digi',n:'DigiEase UAT'},
+    {k:'ilens',n:'ILENS'},
+    {k:'tol',n:'TOL UAT'},
+  ];
+
+  document.getElementById('stuModalTitle').textContent=`${s.name} — Individual Dashboard`;
+  document.getElementById('stuModalBody').innerHTML=`
+    <div class="stu-hero">
+      <div class="stu-stat">
+        <div class="stu-stat-label">Rank</div>
+        <div class="stu-stat-val" style="color:var(--navy)">#${s.rank}</div>
+      </div>
+      <div class="stu-stat">
+        <div class="stu-stat-label">Composite Score</div>
+        <div class="stu-stat-val" style="color:${tCol}">${sc}%</div>
+      </div>
+      <div class="stu-stat">
+        <div class="stu-stat-label">Lumen Avg</div>
+        <div class="stu-stat-val" style="color:var(--purple)">${Math.round(s.lumenAvg*100)}%</div>
+      </div>
+      <div class="stu-stat">
+        <div class="stu-stat-label">UAT Working</div>
+        <div class="stu-stat-val" style="color:var(--navy)">${s.uatCount}/6</div>
+      </div>
+      <div class="stu-stat">
+        <div class="stu-stat-label">Status</div>
+        <div class="stu-stat-val" style="color:${tCol};font-size:.95rem">${perfLabel(s.score)}</div>
+      </div>
+    </div>
+
+    <div class="stu-section">
+      <h4>Device & Tools Adoption</h4>
+      <div class="stu-row">
+        <span class="stu-row-label">Laptop Active</span>
+        <span style="font-weight:700;color:${s.laptop==='YES'?'var(--green)':'var(--red)'}">${s.laptop==='YES'?'✓ Yes — Active':'✗ No — Inactive'}</span>
+      </div>
+      <div class="stu-row">
+        <span class="stu-row-label">Learning Matrix</span>
+        <span style="font-weight:700;color:${s.lm==='YES'?'var(--green)':'var(--red)'}">${s.lm==='YES'?'✓ Yes — Completed':'✗ No — Pending'}</span>
+      </div>
+    </div>
+
+    <div class="stu-section">
+      <h4>Lumen Module Progress (midpoint of reported range)</h4>
+      <div class="lumen-bars">
+        <div class="lumen-row">
+          <span class="lumen-label">SES</span>
+          <div class="lumen-bar-bg"><div class="lumen-bar-fill" style="width:${sesP}%;background:var(--purple)"></div></div>
+          <span class="lumen-pct">${sesP}%</span>
+          <span class="lumen-bucket">${s.ses}</span>
+        </div>
+        <div class="lumen-row">
+          <span class="lumen-label">TS</span>
+          <div class="lumen-bar-bg"><div class="lumen-bar-fill" style="width:${tsP}%;background:#7C3AED"></div></div>
+          <span class="lumen-pct">${tsP}%</span>
+          <span class="lumen-bucket">${s.ts}</span>
+        </div>
+        <div class="lumen-row">
+          <span class="lumen-label">BBC</span>
+          <div class="lumen-bar-bg"><div class="lumen-bar-fill" style="width:${bbcP}%;background:#A78BFA"></div></div>
+          <span class="lumen-pct">${bbcP}%</span>
+          <span class="lumen-bucket">${s.bbc}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stu-section">
+      <h4>UAT Link Status (${s.uatCount}/6 Working)</h4>
+      <div class="uat-pill-grid">
+        ${uatKeys.map(u=>`<div class="uat-pill ${s[u.k]==='WORKING'?'ok':'fail'}">${s[u.k]==='WORKING'?'✓':'✗'} ${u.n}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="stu-section">
+      <h4>Score Breakdown (Weighted — Total: ${sc}/100)</h4>
+      <div class="stu-row">
+        <span class="stu-row-label">Laptop Active (10% weight)</span>
+        <span style="font-weight:700;color:${s.laptop==='YES'?'var(--green)':'var(--red)'}">${laptopPts}/10 pts</span>
+      </div>
+      <div class="stu-row">
+        <span class="stu-row-label">Learning Matrix (10% weight)</span>
+        <span style="font-weight:700;color:${s.lm==='YES'?'var(--green)':'var(--red)'}">${lmPts}/10 pts</span>
+      </div>
+      <div class="stu-row">
+        <span class="stu-row-label">Lumen Avg (50% weight) — ${Math.round(s.lumenAvg*100)}% avg</span>
+        <span style="font-weight:700;color:var(--purple)">${lumenPts}/50 pts</span>
+      </div>
+      <div class="stu-row">
+        <span class="stu-row-label">UAT Working (30% weight) — ${s.uatCount}/6 links</span>
+        <span style="font-weight:700;color:var(--navy)">${uatPts}/30 pts</span>
+      </div>
+      <div class="stu-row" style="background:var(--surf2);border-radius:7px;padding:8px 10px;margin-top:5px;border:1.5px solid var(--border)">
+        <span style="font-weight:800;font-size:13px">Total Composite Score</span>
+        <span style="font-weight:800;font-size:1.15rem;color:${tCol}">${sc} / 100</span>
+      </div>
+    </div>
+  `;
+  document.getElementById('stuModal').classList.add('open');
+}
+function closeStu(){document.getElementById('stuModal').classList.remove('open')}
+function closeStuModal(e){if(e.target===document.getElementById('stuModal'))closeStu()}
+
+// =====================================================================
+// TABLE
+// =====================================================================
+function sortBy(col){
+  if(sortCol===col)sortDir*=-1; else{sortCol=col;sortDir=1;}
+  renderTable(filtered);
+}
+function renderTable(data){
+  const sorted=[...data].sort((a,b)=>{
+    if(sortCol==='name') return sortDir*(a.name<b.name?-1:1);
+    const va = sortCol==='rank'?a.rank:sortCol==='laptop'?(a.laptop==='YES'?1:0):sortCol==='lm'?(a.lm==='YES'?1:0):sortCol==='lumen'?a.lumenAvg:sortCol==='uat'?a.uatPct:sortCol==='score'?a.score:a.rank;
+    const vb = sortCol==='rank'?b.rank:sortCol==='laptop'?(b.laptop==='YES'?1:0):sortCol==='lm'?(b.lm==='YES'?1:0):sortCol==='lumen'?b.lumenAvg:sortCol==='uat'?b.uatPct:sortCol==='score'?b.score:b.rank;
+    return sortDir*(va-vb);
+  });
+  const tagC={'high':'var(--green)','track':'var(--amber)','low':'var(--red)'};
+  document.getElementById('tableBody').innerHTML=sorted.map(s=>{
+    const sc=Math.round(s.score*100), t=perfTag(s.score);
+    const rkC=s.rank<=3?'var(--gold)':tagC[t];
+    return `<tr onclick="openStudentDash(${s.id-1})" title="Open ${s.name}'s dashboard">
+      <td><span class="rank-badge" style="background:${rkC}18;color:${rkC}">${s.rank}</span></td>
+      <td style="font-weight:600;min-width:130px">${s.name}</td>
+      <td><span style="font-size:11px;font-weight:700;color:${s.laptop==='YES'?'var(--green)':'var(--muted)'}">${s.laptop==='YES'?'✓ Yes':'✗ No'}</span></td>
+      <td><span style="font-size:11px;font-weight:700;color:${s.lm==='YES'?'var(--green)':'var(--muted)'}">${s.lm==='YES'?'✓ Yes':'✗ No'}</span></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="bar-mini" style="width:70px"><div class="bar-fill" style="width:${Math.round(s.lumenAvg*100)}%;background:var(--purple)"></div></div>
+          <span style="font-size:11px;font-weight:700;color:var(--purple)">${Math.round(s.lumenAvg*100)}%</span>
+        </div>
+      </td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="bar-mini" style="width:50px"><div class="bar-fill" style="width:${Math.round(s.uatPct*100)}%;background:var(--navy)"></div></div>
+          <span style="font-size:11px;font-weight:700;color:var(--navy)">${s.uatCount}/6</span>
+        </div>
+      </td>
+      <td style="font-size:14px;font-weight:800;color:${tagC[t]}">${sc}%</td>
+      <td><span class="tag tag-${t}">${perfLabel(s.score)}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('tableCount').textContent=`${sorted.length} of ${allData.length} students`;
+}
+
+// =====================================================================
+// CHARTS
+// =====================================================================
+let pieChart, lumenBar, adoptionChart, distChart;
+
+function initCharts(){
+  // --- Doughnut: performance distribution ---
+  pieChart=new Chart(document.getElementById('pieChart').getContext('2d'),{
+    type:'doughnut',
+    data:{
+      labels:['High Performer','On Track','Needs Attention'],
+      datasets:[{data:[0,0,0],backgroundColor:['#1A7A3C','#D97706','#C0392B'],borderWidth:3,borderColor:'transparent',hoverOffset:8}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,cutout:'60%',
+      plugins:{
+        legend:{display:true,position:'bottom',labels:{font:{size:11,family:"'Plus Jakarta Sans'"},padding:12}},
+        tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw} students`}}
+      },
+      onClick:(e,els)=>{
+        if(!els.length)return;
+        const cats=['high','track','low'],lbls=['High Performers','On Track','Needs Attention'];
+        showDrillModal(lbls[els[0].index],filtered.filter(s=>perfTag(s.score)===cats[els[0].index]));
+      }
+    }
+  });
+
+  // --- Bar: Lumen module averages ---
+  // Y-axis 0–100 so bars show meaningful differences
+  lumenBar=new Chart(document.getElementById('lumenBar').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['SES (Avg)','TS (Avg)','BBC (Avg)'],
+      datasets:[{
+        label:'Batch avg %',data:[0,0,0],
+        backgroundColor:['#5B21B6','#7C3AED','#A78BFA'],
+        borderRadius:8,borderSkipped:false
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>`Avg: ${c.raw.toFixed(1)}%`}},
+        // Show value on top of each bar
+        datalabels:{display:false}
+      },
+      scales:{
+        y:{
+          min:0,max:100,
+          ticks:{stepSize:20,callback:v=>v+'%',font:{size:11,family:"'Plus Jakarta Sans'"}},
+          grid:{color:'rgba(128,128,128,.07)'}
+        },
+        x:{
+          grid:{display:false},
+          ticks:{font:{size:11,family:"'Plus Jakarta Sans'"}}
+        }
+      }
+    }
+  });
+
+  // --- Bar: Laptop & LM adoption (stacked) ---
+  adoptionChart=new Chart(document.getElementById('adoptionChart').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['Laptop Active','Lrn Matrix Active'],
+      datasets:[
+        {label:'Yes',data:[0,0],backgroundColor:['#1A7A3C','#1A7A3C'],borderRadius:6},
+        {label:'No', data:[0,0],backgroundColor:['#FDECEA','#FDECEA'],borderRadius:6}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,position:'bottom',labels:{font:{size:11,family:"'Plus Jakarta Sans'"},padding:10}},
+        tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}`}}
+      },
+      scales:{
+        x:{stacked:true,grid:{display:false},ticks:{font:{size:11,family:"'Plus Jakarta Sans'"}}},
+        y:{stacked:true,ticks:{stepSize:10,font:{size:11,family:"'Plus Jakarta Sans'"}},grid:{color:'rgba(128,128,128,.07)'}}
+      },
+      onClick:(e,els)=>{
+        if(!els.length)return;
+        const yes=els[0].datasetIndex===0, bi=els[0].index;
+        if(bi===0) showDrillModal(yes?'Laptop Active':'Laptop Inactive',filtered.filter(s=>yes?s.laptop==='YES':s.laptop!=='YES'));
+        else       showDrillModal(yes?'Learning Matrix Active':'Learning Matrix Pending',filtered.filter(s=>yes?s.lm==='YES':s.lm!=='YES'));
+      }
+    }
+  });
+
+  // --- Bar: Score distribution ---
+  const bins=['0–20%','20–40%','40–60%','60–80%','80–100%'];
+  distChart=new Chart(document.getElementById('distChart').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:bins,
+      datasets:[{label:'Students',data:[0,0,0,0,0],backgroundColor:['#C0392B','#E67E22','#D97706','#1D6A2E','#1A7A3C'],borderRadius:7,borderSkipped:false}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw} student${c.raw!==1?'s':''}`}}},
+      scales:{
+        y:{ticks:{stepSize:2,font:{size:11,family:"'Plus Jakarta Sans'"}},grid:{color:'rgba(128,128,128,.07)'}},
+        x:{grid:{display:false},ticks:{font:{size:10,family:"'Plus Jakarta Sans'"}}}
+      },
+      onClick:(e,els)=>{
+        if(!els.length)return;
+        const bi=els[0].index;
+        const ranges=[[0,.2],[.2,.4],[.4,.6],[.6,.8],[.8,1.01]];
+        showDrillModal(`Score Range ${bins[bi]}`,filtered.filter(s=>s.score>=ranges[bi][0]&&s.score<ranges[bi][1]));
+      }
+    }
+  });
+}
+
+// =====================================================================
+// UPDATE CHARTS WITH CURRENT FILTERED DATA
+// =====================================================================
+function updateCharts(data){
+  const n=data.length;
+
+  // Pie
+  pieChart.data.datasets[0].data=[
+    data.filter(s=>perfTag(s.score)==='high').length,
+    data.filter(s=>perfTag(s.score)==='track').length,
+    data.filter(s=>perfTag(s.score)==='low').length
+  ];
+  pieChart.update();
+
+  // Lumen bar — values are already 0-100 percentages (midpoints × 100)
+  const sesAvg = n ? data.reduce((a,s)=>a+bm(s.ses),0)/n*100 : 0;
+  const tsAvg  = n ? data.reduce((a,s)=>a+bm(s.ts),0)/n*100  : 0;
+  const bbcAvg = n ? data.reduce((a,s)=>a+bm(s.bbc),0)/n*100 : 0;
+  lumenBar.data.datasets[0].data=[
+    parseFloat(sesAvg.toFixed(1)),
+    parseFloat(tsAvg.toFixed(1)),
+    parseFloat(bbcAvg.toFixed(1))
+  ];
+  lumenBar.update();
+
+  // Adoption
+  const lpY=data.filter(s=>s.laptop==='YES').length;
+  const lmY=data.filter(s=>s.lm==='YES').length;
+  adoptionChart.data.datasets[0].data=[lpY,lmY];
+  adoptionChart.data.datasets[1].data=[n-lpY,n-lmY];
+  adoptionChart.update();
+
+  // Distribution
+  const binData=[0,0,0,0,0];
+  data.forEach(s=>{const b=Math.min(4,Math.floor(s.score*5));binData[b]++;});
+  distChart.data.datasets[0].data=binData;
+  distChart.update();
+
+  // UAT grid
+  const uatCols =['c360','icrms','icrmv','digi','ilens','tol'];
+  const uatNames=['C-360 Dashboard','ICRM Sales','ICRM Services','DigiEase UAT','ILENS','TOL UAT'];
+  const ug=document.getElementById('uatGrid');
+  ug.innerHTML=uatCols.map((k,i)=>{
+    const cnt=data.filter(s=>s[k]==='WORKING').length;
+    const pct=n?Math.round(cnt/n*100):0;
+    const c =pct>=60?'#1A7A3C':pct>=40?'#D97706':'#C0392B';
+    const bg=pct>=60?'#E6F4EC':pct>=40?'#FFF8E6':'#FDECEA';
+    return `<div class="uat-cell" style="background:${bg};border-color:${c}40" data-uat-key="${k}" data-uat-name="${uatNames[i]}">
+      <div class="uat-name">${uatNames[i]}</div>
+      <div class="uat-pct" style="color:${c}">${pct}%</div>
+      <div style="font-size:10px;color:${c};font-weight:700;margin:.1rem 0">${cnt}/${n} working</div>
+      <div class="uat-bar"><div style="height:100%;width:${pct}%;background:${c};border-radius:2px;transition:width .4s"></div></div>
+      <div style="font-size:9px;color:${c};margin-top:4px;opacity:.65">👆 Click to see students</div>
+    </div>`;
+  }).join('');
+  ug.onclick=function(e){
+    const cell=e.target.closest('[data-uat-key]');
+    if(!cell)return;
+    showDrillModal(`${cell.dataset.uatName} — Working`,data.filter(s=>s[cell.dataset.uatKey]==='WORKING'));
+  };
+
+  // Spotlight — ALL matching students scrollable
+  const hiS=[...data].filter(s=>perfTag(s.score)==='high').sort((a,b)=>a.rank-b.rank);
+  const loS=[...data].filter(s=>perfTag(s.score)==='low').sort((a,b)=>a.rank-b.rank);
+
+  document.getElementById('topSpot').innerHTML=hiS.length ? hiS.map(s=>`
+    <div class="summary-row" onclick="openStudentDash(${s.id-1})">
+      <div style="display:flex;align-items:center;gap:7px;overflow:hidden">
+        <span style="font-weight:800;font-size:11px;color:var(--gold);min-width:32px;flex-shrink:0">#${s.rank}</span>
+        <b style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</b>
+        <span style="font-size:10px;color:var(--muted);font-weight:500;white-space:nowrap">Lumen:${Math.round(s.lumenAvg*100)}% · UAT:${s.uatCount}/6</span>
+      </div>
+      <span class="tag tag-high" style="flex-shrink:0;margin-left:6px">${Math.round(s.score*100)}%</span>
+    </div>`).join('')
+    : '<div style="color:var(--muted);font-size:13px;padding:.5rem">No students match current filter.</div>';
+
+  document.getElementById('lowSpot').innerHTML=loS.length ? loS.map(s=>`
+    <div class="summary-row" onclick="openStudentDash(${s.id-1})">
+      <div style="display:flex;align-items:center;gap:7px;overflow:hidden">
+        <span style="font-weight:800;font-size:11px;color:var(--red);min-width:32px;flex-shrink:0">#${s.rank}</span>
+        <b style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.name}</b>
+        <span style="font-size:10px;color:var(--muted);font-weight:500;white-space:nowrap">Lumen:${Math.round(s.lumenAvg*100)}% · UAT:${s.uatCount}/6</span>
+      </div>
+      <span class="tag tag-low" style="flex-shrink:0;margin-left:6px">${Math.round(s.score*100)}%</span>
+    </div>`).join('')
+    : '<div style="color:var(--muted);font-size:13px;padding:.5rem">No students match current filter.</div>';
+}
+
+// =====================================================================
+// SECTION STUDENTS GRID
+// =====================================================================
+function populateJumpDropdown(){
+  const sel=document.getElementById('secbName');
+  sel.innerHTML='<option value="">Jump to student…</option>'+
+    [...allData].sort((a,b)=>a.name.localeCompare(b.name))
+      .map(s=>`<option value="${s.id-1}">${s.name}</option>`).join('');
+}
+function jumpToStudent(){
+  const v=document.getElementById('secbName').value;
+  if(v!=='')openStudentDash(parseInt(v));
+  setTimeout(()=>document.getElementById('secbName').value='',300);
+}
+function getSecBFiltered(){
+  const q =document.getElementById('secbSearch').value.toLowerCase();
+  const st=document.getElementById('secbStatus').value;
+  const lp=document.getElementById('secbLaptop').value;
+  return allData.filter(s=>{
+    if(q  && !s.name.toLowerCase().includes(q))return false;
+    if(st!=='all' && perfTag(s.score)!==st)    return false;
+    if(lp==='yes' && s.laptop!=='YES')         return false;
+    if(lp==='no'  && s.laptop==='YES')         return false;
+    return true;
+  });
+}
+function renderSectionGrid(){
+  const data=getSecBFiltered();
+  document.getElementById('secbCount').textContent=
+    `Section-B — Showing ${data.length} of ${allData.length} students · Click any card to open their dashboard`;
+  const tagC={'high':'var(--green)','track':'var(--amber)','low':'var(--red)'};
+  document.getElementById('studentGrid').innerHTML=data.sort((a,b)=>a.rank-b.rank).map(s=>{
+    const t=perfTag(s.score), sc=Math.round(s.score*100);
+    return `<div class="student-card" onclick="openStudentDash(${s.id-1})">
+      <div class="sc-rank">${s.rank}</div>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-score" style="color:${tagC[t]}">${sc}%</div>
+      <div style="font-size:11px;color:${tagC[t]};font-weight:700;margin-bottom:.1rem">${perfLabel(s.score)}</div>
+      <div class="sc-badges">
+        <span class="sc-badge" style="background:${s.laptop==='YES'?'var(--green-lt)':'var(--red-lt)'};color:${s.laptop==='YES'?'var(--green)':'var(--red)'}">💻 ${s.laptop==='YES'?'Active':'Inactive'}</span>
+        <span class="sc-badge" style="background:${s.lm==='YES'?'var(--green-lt)':'var(--red-lt)'};color:${s.lm==='YES'?'var(--green)':'var(--red)'}">📋 LM ${s.lm==='YES'?'✓':'✗'}</span>
+        <span class="sc-badge" style="background:var(--purple-lt);color:var(--purple)">UAT ${s.uatCount}/6</span>
+      </div>
+    </div>`;
+  }).join('')||'<div style="color:var(--muted);font-size:13px;padding:1rem 0">No students match the current filter.</div>';
+}
+function resetSectionB(){
+  document.getElementById('secbSearch').value='';
+  document.getElementById('secbStatus').value='all';
+  document.getElementById('secbLaptop').value='all';
+  renderSectionGrid();
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+initCharts();
+renderKPIs(allData);
+filtered=[...allData];
+renderTable(filtered);
+updateCharts(filtered);
+populateJumpDropdown();
+updateClock();
+setInterval(updateClock,1000);
+</script>
+</body>
+</html>
